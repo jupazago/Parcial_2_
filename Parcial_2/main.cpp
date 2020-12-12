@@ -138,18 +138,18 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
     int flag = 0;
 
     //Generar disparo defensivo
-    for(int angulo = 0; angulo < 90 ; angulo++){
+    for(int angulo = 10; angulo < 90 ; angulo++){
         DEFENSIVO.setAng(angulo+90);
-        for(float velocidad = 1; velocidad < 300 ; velocidad += 5){
+        for(float velocidad = 50; velocidad < 300 ; velocidad += 5){
             DEFENSIVO.setVel(velocidad); //Angulo
             DEFENSIVO.setVelx(velocidad*cos(DEFENSIVO.getAng()*pi/180));  //Vellocidad X
             DEFENSIVO.setVely(velocidad*sin(DEFENSIVO.getAng()*pi/180));  //Vellocidad Y
             DEFENSIVO.setR(0.025*(DEFENSIVO.getPosx())); //0.025*d __ distancia entre caniones
 
             for(float t2 = 0; ; t2 += 0.05){
-                xd = -DEFENSIVO.getVelx()*t2;
+                xd = DEFENSIVO.getVelx()*t2;
                 yd = DEFENSIVO.getPosy() + DEFENSIVO.getVely()*t2 - (0.5*G*t2*t2);
-                float t = t2;
+                float t = t2+2;
                 xo = OFENSIVO.getVelx()*t;
                 yo = OFENSIVO.getPosy() + OFENSIVO.getVely()*t - (0.5*G*t*t);
 
@@ -160,10 +160,10 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
                 //Verificar impacto
                 //comprobar que este en el radio de impacto
                 //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
-                if(sqrt(pow((xo - xd),2)+pow((yo - yd),2)) < OFENSIVO.getR()){
+                if(sqrt(pow((xo - (xd+500)),2)+pow((yo - yd),2)) < OFENSIVO.getR()){
                     if(yd<0) yd = 0;
                     cout << "Lanzamiento Defensivo #"<<flag+1<<endl;
-                    ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd, yd, t2);
+                    ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd+500, yd, t2);
                     ImprimirResultados(OFENSIVO.getAng(), OFENSIVO.getVel(), xo, yo, t);
 
                     flag++;
