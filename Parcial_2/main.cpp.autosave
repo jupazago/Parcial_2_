@@ -24,7 +24,8 @@ int main()
 
     cout << "Canion Ofensivo: ( "<<OFENSIVO.getPosx() << " , "<< OFENSIVO.getPosy()<<" )"<<endl;
     cout << "Canion Ofensivo: ( "<<DEFENSIVO.getPosx() << " , "<< DEFENSIVO.getPosy()<<" )"<<endl;
-
+    cout << "-------------------------"<<endl;
+    cout << "-------------------------"<<endl<<endl;
     DisparoOfensivo(OFENSIVO, DEFENSIVO);
 
 

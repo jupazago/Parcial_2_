@@ -60,12 +60,14 @@ void Canion::setVely(double value)
     vely = value;
 }
 
-int Canion::getR() const
+
+
+double Canion::getR() const
 {
     return r;
 }
 
-void Canion::setR(int value)
+void Canion::setR(double value)
 {
     r = value;
 }

@@ -10,7 +10,7 @@ class Canion
     double ang;
     double velx;
     double vely;
-    int r;
+    double r;
 
 public:
     //Constructores
@@ -29,8 +29,8 @@ public:
     void setVelx(double value);
     double getVely() const;
     void setVely(double value);
-    int getR() const;
-    void setR(int value);
+    double getR() const;
+    void setR(double value);
 };
 
 #endif // CANION_H
