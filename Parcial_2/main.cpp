@@ -109,7 +109,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                         //Creamos la reaccion DEFENSIVA
                         if(t>2){
                             //3 disparos defensivos
-                            DisparoDefensivo(OFENSIVO, DEFENSIVO, 1);
+                            DisparoDefensivo(OFENSIVO, DEFENSIVO);
 
                         }
                         flag++;
@@ -208,11 +208,6 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
                 float t = t2+2;
                 xo = OFENSIVO.getVelx()*t;
                 yo = OFENSIVO.getPosy() + OFENSIVO.getVely()*t - (0.5*G*t*t);
-
-
-
-
-
                 //Verificar impacto
                 //comprobar que este en el radio de impacto
                 //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
