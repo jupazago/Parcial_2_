@@ -25,8 +25,8 @@ int main()
     cout << "Canion Ofensivo : ( "<<OFENSIVO.getPosx() << "   , "<< OFENSIVO.getPosy()<<" )"<<endl;
     cout << "Canion Defensivo: ( "<<DEFENSIVO.getPosx() << " , "<< DEFENSIVO.getPosy()<<" )"<<endl;
 
-    //DisparoOfensivo(OFENSIVO, DEFENSIVO, 1);
-    cout<<"------------------------------------------------------------"<<endl;
+    DisparoOfensivo(OFENSIVO, DEFENSIVO, 1);
+    cout<<"------------------------------------------------------------------------------"<<endl;
     DisparoOfensivo(OFENSIVO, DEFENSIVO, 2);
 
     cout << endl<< endl;
@@ -92,7 +92,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                 for(float t = 0; ; t+= 0.05){
                     x = OFENSIVO.getVelx()*t;
                     y = OFENSIVO.getPosy()+ OFENSIVO.getVely()*t -(0.5*G*t*t);
-                    y += DEFENSIVO.getPosy();
+                    //y += DEFENSIVO.getPosy();
                     //Verificar impacto
                     //comprobar que este en el radio de impacto
                     //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
@@ -163,7 +163,6 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                         if(t>2){
                             //3 disparos defensivos
                             DisparoDefensivo(OFENSIVO1, DEFENSIVO1);
-
                         }
                         flag++;
                         angulo += 5;
@@ -183,7 +182,6 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
         }
     }
 }
-
 
 bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
 
