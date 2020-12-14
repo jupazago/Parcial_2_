@@ -148,7 +148,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                 for(float t = 0; ; t+= 0.05){
                     x = OFENSIVO1.getVelx()*t;
                     y = OFENSIVO1.getPosy()+ OFENSIVO1.getVely()*t -(0.5*G*t*t);
-                    y += DEFENSIVO1.getPosy();
+                    //y += DEFENSIVO1.getPosy();
                     //Verificar impacto
                     //comprobar que este en el radio de impacto
                     //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
@@ -213,13 +213,14 @@ void DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo){
                 //Verificar impacto
                 //comprobar que este en el radio de impacto
                 //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
-
                 if(sqrt(pow((xo - xd),2)+pow((yo - yd),2)) <= OFENSIVO.getR()){
                     if(yd<0) yd = 0;
                     cout <<endl<< "***Lanzamiento Defensivo #"<<flag+1 ;
                     cout << "  - Datos prediccion de explosion entre caniones "<<endl<<endl;
+                    cout << "Canion Defensivo:"<<endl;
                     ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd, yd, t2);
                     cout <<endl;
+                    cout << "Canion Ofensivo:"<<endl;
                     ImprimirResultados(OFENSIVO.getAng(), OFENSIVO.getVel(), xo, yo, t);
                     cout << "--------------------------------------"<<endl;
                     cout << "--------------------------------------"<<endl;
@@ -278,16 +279,21 @@ void DisparoNeutral(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo){
                 //distancia entre dos puntos (Neutralizador y DEFENSIVO) < radio de explosion
                 if(sqrt(pow((xo - xd),2)+pow((yo - yd),2)) <= OFENSIVO.getR()){
                     if(yd<0) yd = 0;
-                    cout <<endl<< "***Impacto "<<endl<<endl;
-
+                    cout <<endl<< "***Impacto Neutralizador VS Defensa"<<endl<<endl;
+                    cout << "Canion Defensivo:"<<endl;
+                    ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd, yd, t);
+                    cout <<endl;
+                    cout << "Canion Neutralizador:"<<endl;
+                    ImprimirResultados(OFENSIVO.getAng(), OFENSIVO.getVel(), xo, yo, t2);
+                    cout << "--------------------------------------"<<endl;
+                    cout << "--------------------------------------"<<endl;
+                    cout << "--------------------------------------"<<endl;
                     flag++;
                     angulo += 5;
                     velocidad += 10;
                     break;
                 }
-                if(yd < 0){
-                    break;
-                }
+                if(yd < 0) break;
             }
             if(flag == 3) break;
         }
