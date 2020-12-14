@@ -23,12 +23,15 @@ int main()
     Canion DEFENSIVO = llenar_datos(2);
 
     cout << "                     X  Y"<<endl;
-    cout << "Canion Ofensivo : ( "<<OFENSIVO.getPosx() << "   , "<< OFENSIVO.getPosy()<<" )"<<endl;
-    cout << "Canion Defensivo: ( "<<DEFENSIVO.getPosx() << " , "<< DEFENSIVO.getPosy()<<" )"<<endl;
+    cout << "Canion #1 : ( "<<OFENSIVO.getPosx() << "   , "<< OFENSIVO.getPosy()<<" )"<<endl;
+    cout << "Canion #2 : ( "<<DEFENSIVO.getPosx() << " , "<< DEFENSIVO.getPosy()<<" )"<<endl;
 
-    DisparoOfensivo(OFENSIVO, DEFENSIVO, 1);
-    cout<<"------------------------------------------------------------------------------"<<endl;
-    //DisparoOfensivo(OFENSIVO, DEFENSIVO, 2);
+    //Decide de donde a donde se dispara, ubicandolos en el plano cartesiano
+    if(OFENSIVO.getPosx() < DEFENSIVO.getPosx()){
+        DisparoOfensivo(OFENSIVO, DEFENSIVO, 1);
+    }else{
+        DisparoOfensivo(OFENSIVO, DEFENSIVO, 2);
+    }
 
     cout << endl<< endl;
     return 0;
