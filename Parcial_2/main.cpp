@@ -11,7 +11,8 @@ Canion llenar_datos(int opcion);
 void ImprimirResultados(int anglulo,int velocidad, float x, float y, float t);
 
 void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion);
-bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO);
+void DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo);
+void DisparoNeutral(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo);
 
 int main()
 {
@@ -27,7 +28,7 @@ int main()
 
     DisparoOfensivo(OFENSIVO, DEFENSIVO, 1);
     cout<<"------------------------------------------------------------------------------"<<endl;
-    DisparoOfensivo(OFENSIVO, DEFENSIVO, 2);
+    //DisparoOfensivo(OFENSIVO, DEFENSIVO, 2);
 
     cout << endl<< endl;
     return 0;
@@ -52,7 +53,7 @@ Canion llenar_datos(int opcion){
         */
 
         //Canion canio(posx, posy);
-        Canion canio(500, 50);
+        Canion canio(800, 50);
         return  canio;
 
     }
@@ -82,7 +83,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
 
         for(int angulo = 1; angulo < 90 ; angulo++){
             OFENSIVO.setAng(angulo);//Angulo
-            for(float velocidad = 50; velocidad < 150 ; velocidad += 5){
+            for(float velocidad = 50; velocidad < 100 ; velocidad += 5){
                 OFENSIVO.setVel(velocidad);
                 OFENSIVO.setVelx(velocidad*cos(OFENSIVO.getAng()*pi/180));  //Vellocidad X
                 OFENSIVO.setVely(velocidad*sin(OFENSIVO.getAng()*pi/180));  //Vellocidad Y
@@ -109,7 +110,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                         //Creamos la reaccion DEFENSIVA
                         if(t>2){
                             //3 disparos defensivos
-                            DisparoDefensivo(OFENSIVO, DEFENSIVO);
+                            DisparoDefensivo(OFENSIVO, DEFENSIVO, t);
 
                         }
                         flag++;
@@ -134,7 +135,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
 
         for(int angulo = 1; angulo < 90 ; angulo++){
             OFENSIVO1.setAng(angulo);//Angulo
-            for(float velocidad = 50; velocidad < 150 ; velocidad += 5){
+            for(float velocidad = 50; velocidad < 100 ; velocidad += 5){
                 OFENSIVO1.setVel(velocidad);
                 OFENSIVO1.setVelx(velocidad*cos(OFENSIVO1.getAng()*pi/180));  //Vellocidad X
                 OFENSIVO1.setVely(velocidad*sin(OFENSIVO1.getAng()*pi/180));  //Vellocidad Y
@@ -162,7 +163,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
                         //Creamos la reaccion DEFENSIVA
                         if(t>2){
                             //3 disparos defensivos
-                            DisparoDefensivo(OFENSIVO1, DEFENSIVO1);
+                            DisparoDefensivo(OFENSIVO1, DEFENSIVO1, t);
                         }
                         flag++;
                         angulo += 5;
@@ -183,7 +184,7 @@ void DisparoOfensivo(Canion OFENSIVO, Canion DEFENSIVO, int seleccion){
     }
 }
 
-bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
+void DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo){
 
     float xo = 0.0;
     float yo = 0.0;
@@ -192,16 +193,16 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
     int flag = 0;
 
     //Generar disparo defensivo
-    for(int angulo = 10; angulo < 90 ; angulo++){
-        DEFENSIVO.setAng(angulo+90);
-        for(float velocidad = 50; velocidad < 300 ; velocidad += 5){
-            DEFENSIVO.setVel(velocidad); //Angulo
+    for(int angulo = 180; angulo > 90 ; angulo--){
+        DEFENSIVO.setAng(angulo); //Angulo
+        for(float velocidad = 50; velocidad < 100 ; velocidad += 5){
+            DEFENSIVO.setVel(velocidad);
             DEFENSIVO.setVelx(velocidad*cos(DEFENSIVO.getAng()*pi/180));  //Vellocidad X
             DEFENSIVO.setVely(velocidad*sin(DEFENSIVO.getAng()*pi/180));  //Vellocidad Y
             DEFENSIVO.setR(0.025*(DEFENSIVO.getPosx())); //0.025*d __ distancia entre caniones
 
-            for(float t2 = 0; ; t2 += 0.05){
-                xd = DEFENSIVO.getVelx()*t2;
+            for(float t2 = 0; t2<Limite_tiempo ; t2 += 0.05){
+                xd = (DEFENSIVO.getVelx()*t2)+DEFENSIVO.getPosx();
                 yd = DEFENSIVO.getPosy() + DEFENSIVO.getVely()*t2 - (0.5*G*t2*t2);
                 float t = t2+2;
                 xo = OFENSIVO.getVelx()*t;
@@ -209,16 +210,74 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
                 //Verificar impacto
                 //comprobar que este en el radio de impacto
                 //distancia entre dos puntos (bala y DEFENSIVO) < radio de explosion
-                if(sqrt(pow((xo - (xd+500)),2)+pow((yo - yd),2)) < OFENSIVO.getR()){
+
+                if(sqrt(pow((xo - xd),2)+pow((yo - yd),2)) <= OFENSIVO.getR()){
                     if(yd<0) yd = 0;
                     cout <<endl<< "***Lanzamiento Defensivo #"<<flag+1 ;
-                    cout << "  - Datos de explosion entre caniones "<<endl<<endl;
-                    ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd+500, yd, t2);
+                    cout << "  - Datos prediccion de explosion entre caniones "<<endl<<endl;
+                    ImprimirResultados(DEFENSIVO.getAng(), DEFENSIVO.getVel(), xd, yd, t2);
                     cout <<endl;
                     ImprimirResultados(OFENSIVO.getAng(), OFENSIVO.getVel(), xo, yo, t);
                     cout << "--------------------------------------"<<endl;
                     cout << "--------------------------------------"<<endl;
                     cout << "--------------------------------------"<<endl;
+
+                    //Creamos la reaccion NEUTRALIZAR
+                    if(t>1){
+                        //3 disparos NEUTRALES
+                        DisparoNeutral(OFENSIVO, DEFENSIVO, t2);
+
+                    }
+
+                    flag++;
+                    angulo -= 5;
+                    velocidad += 10;
+                    break;
+                }
+                if(yd < 0){
+                    break;
+                }
+            }
+            if(flag == 3) break;
+        }
+        if(flag == 3) break;
+    }
+
+}
+
+void DisparoNeutral(Canion OFENSIVO, Canion DEFENSIVO, float Limite_tiempo){
+
+    float xo = 0.0;
+    float yo = 0.0;
+    float xd = 0.0;
+    float yd = 0.0;
+    int flag = 0;
+
+
+
+    //Generar disparo NEUTRAL
+    for(float angulo = 1; angulo < 90 ; angulo+=0.5){
+        DEFENSIVO.setAng(angulo);
+        for(float velocidad = 600; velocidad < 1000 ; velocidad += 1){
+            OFENSIVO.setVel(velocidad); //Angulo
+            OFENSIVO.setVelx(velocidad*cos(OFENSIVO.getAng()*pi/180));  //Vellocidad X
+            OFENSIVO.setVely(velocidad*sin(OFENSIVO.getAng()*pi/180));  //Vellocidad Y
+            OFENSIVO.setR(0.005*(DEFENSIVO.getPosx())); //0.025*d __ distancia entre caniones
+
+            for(float t2 = 0; t2<Limite_tiempo ; t2 += 0.05){
+                xd = (OFENSIVO.getVelx()*t2)+OFENSIVO.getPosx();
+                yd = OFENSIVO.getPosy() + DEFENSIVO.getVely()*t2 - (0.5*G*t2*t2);
+                float t = t2+1;
+                xo = (DEFENSIVO.getVelx()*t)+DEFENSIVO.getPosx();
+                yo = DEFENSIVO.getPosy() + DEFENSIVO.getVely()*t - (0.5*G*t*t);
+                //Verificar impacto
+                //comprobar que este en el radio de impacto
+                //distancia entre dos puntos (Neutralizador y DEFENSIVO) < radio de explosion
+                cout << angulo<<endl;
+                if(sqrt(pow((xo - xd),2)+pow((yo - yd),2)) <= DEFENSIVO.getR()){
+                    if(yd<0) yd = 0;
+                    cout <<endl<< "***Impacto "<<endl<<endl;
+
                     flag++;
                     angulo += 5;
                     velocidad += 10;
@@ -232,10 +291,11 @@ bool DisparoDefensivo(Canion OFENSIVO, Canion DEFENSIVO){
         }
         if(flag == 3) break;
     }
-
-    return true;
-
 }
+
+
+
+
 
 
 
